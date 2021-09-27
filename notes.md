@@ -12,3 +12,10 @@
 	-	Relation extraction using OpenIE as a sort of attribute extraction baseline
 	-	Infobox attribute extraction
 	-	Wikidata attribute extraction
+
+## Steps
+-	Process article text
+-	Find coref clusters, create a set of sentences which contain the coreferences (since, attributes about the person will be in these sentences only)
+-	For each sentence, try dependency parsing, openIE
+-	Approach attribute extraction as an QA problem.
+-	On the generated questions for the coreference sentences, run collocations
