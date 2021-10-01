@@ -65,6 +65,8 @@ output_file = 'output.json'
 num = 0
 MAX_ARTICLES = 50
 
+tokenizer = WhitespaceTokenizer()
+
 for d in json_data:
   text = d['processed_text']
   title = d['title']
