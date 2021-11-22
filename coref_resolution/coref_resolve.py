@@ -15,10 +15,13 @@ file.close()
 count = 0
 
 for i in tqdm(range(len(json_data))):
-	doc = nlp(json_data[i]["processed_text"])
-	json_data[i]["coref_resolved"] = doc._.coref_resolved
+	doc = nlp(json_data[i]["article"])
+	json_data[i]["coref_resolved_unprocessed"] = doc._.coref_resolved
 	if count%100 == 0:
-		file = open("./coref_resolved/"+category+"_coref_resolved_data.json", "w+")
+		file = open("./coref_resolved/"+category+"_coref_resolved_unprocessed_data.json", "w+")
 		json.dump(json_data, file, indent=4)
 		file.close()
 	count += 1
+	file = open("./coref_resolved/"+category+"_coref_resolved_unprocessed_data.json", "w+")
+	json.dump(json_data, file, indent=4)
+	file.close()
