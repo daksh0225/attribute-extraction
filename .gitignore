@@ -1,1 +1,2 @@
 *.json
+/django_webapp/frontend/node_modules/
