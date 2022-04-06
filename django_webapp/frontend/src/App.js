@@ -1,10 +1,7 @@
 import React from 'react'; 
 import axios from 'axios';
+import Navbar from './components/navbar/Navbar';
 class App extends React.Component {
-  
-  state = {
-    details : [],
-  }
 
   componentDidMount() {
 
@@ -23,20 +20,8 @@ class App extends React.Component {
   render() {
     return(
       <div>
-            {this.state.details.map((detail, id) =>  (
-            <div key={id}>
-            <div >
-                  <div >
-                        <h1>{detail.detail} </h1>
-                        <footer >--- by
-                        <cite title="Source Title">
-                        {detail.name}</cite>
-                        </footer>
-                  </div>
-            </div>
-            </div>
-            )
-        )}
+        <Navbar />
+        Body
       </div>
       ); 
   } 
