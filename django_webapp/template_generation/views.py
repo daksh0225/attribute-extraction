@@ -1,10 +1,10 @@
 # from django.shortcuts import render
 
 # # Create your views here.
-from django.http import HttpResponse
+from django.http import HttpResponse, JsonResponse
 import json
 from django.views.decorators.csrf import csrf_exempt
-
+import os
 
 from django.shortcuts import render
 from rest_framework.views import APIView
@@ -12,15 +12,25 @@ from . models import *
 from rest_framework.response import Response
 from . serializer import *
 
-obj = []
-with open('superheroes_attribute_collocs.json', 'r') as file:
-	obj = json.load(file)
 
-def home(request):
-	attributes = list(obj.keys())
-	return HttpResponse(json.dumps(attributes, indent=4))
+@csrf_exempt 
+def getDomainNames(request):
 
-@csrf_exempt
+	"""
+	Retrieve all the domain names. All the files present in data folder are assumend to be files corresponding to differnet domains.
+	File name is assumed to be the domain name.
+	"""
+	domains = []
+	try:
+		for file in os.listdir("./template_generation/data"):
+			domain_name = file.split('.')[0]
+			domains.append(domain_name)
+	except all:
+		return HttpResponse(status=404)
+	print(domains)
+	return HttpResponse(json.dumps(domains, indent=4))
+
+@csrf_exempt 
 def setDomain(request):
 	global obj
 	domain = request.POST['domain']
