@@ -1,6 +1,6 @@
 /*.json
 /Categories/*.json
 /data/*.json
-/coref_resolution/*.json
+/coref_resolution/coref_resolved/*.json
 /qna_data/*.json
 /django_webapp/frontend/node_modules/
