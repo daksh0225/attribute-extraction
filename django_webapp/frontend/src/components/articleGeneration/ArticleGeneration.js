@@ -4,7 +4,13 @@ import GenerateArticle from './GenerateArticle';
 import SelectDomain from './SelectDomain';
 class ArticleGeneration extends React.Component {
     changeDomain(domainName) {
-        console.log('set domain to ' + domainName)
+        let data ;
+        axios.get('http://localhost:8000/get_collocs/' + domainName)
+        .then(res => {
+            data = res.data;
+            console.log(data);
+        })
+        .catch(err => {})
     }
     render() {
         return(

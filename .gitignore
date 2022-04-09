@@ -1,2 +1,6 @@
-*.json
+/*.json
+/Categories/*.json
+/data/*.json
+/coref_resolution/*.json
+/qna_data/*.json
 /django_webapp/frontend/node_modules/
