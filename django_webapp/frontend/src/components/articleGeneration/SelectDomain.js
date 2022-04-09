@@ -31,6 +31,7 @@ class SelectDomain extends React.Component {
                 domains: data,
                 selectedDomain: data[0],
             });
+            this.props.setDomain(this.state.selectedDomain);
         })
         .catch(err => {})
     }
@@ -69,7 +70,7 @@ class SelectDomain extends React.Component {
                     <div>
                         <Button 
                             variant="contained"
-                            onClick = {() => this.props.changeDomain(this.state.selectedDomain)}
+                            onClick = {() => this.props.setDomain(this.state.selectedDomain)}
                         >Create Template</Button>
                     </div>
                 </div>

@@ -47,7 +47,10 @@ def get_collocs(request, domain_name):
 		with open(file_path, 'r') as file:
 			obj = json.load(file)
 		for attribute in obj.keys():
-			obj_top_collocs[attribute] = obj[attribute][:5]
+			if len(obj[attribute]) >= 5:
+				obj_top_collocs[attribute] = obj[attribute][:5]
+			elif len(obj[attribute]) > 0:
+				obj_top_collocs[attribute] = obj[attribute]
 		return HttpResponse(json.dumps(obj_top_collocs, indent = 4))
 	except all:
 		return HttpResponse("Invalid domain name")
