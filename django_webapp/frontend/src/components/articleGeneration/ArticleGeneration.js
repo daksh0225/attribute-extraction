@@ -13,6 +13,7 @@ class ArticleGeneration extends React.Component {
         this.setDomain = this.setDomain.bind(this);
         this.showCollocs = this.showCollocs.bind(this)
     }
+
     state = {
         attributes: [],
         selectedDomain: null,
