@@ -1,13 +1,13 @@
 import React from 'react'; 
 import axios from 'axios';
-class GenerateArticle extends React.Component {
+class Attributes extends React.Component {
 
   render() {
     return(
       <div>
-          GenerateArticle
+          We write the article here
       </div>
       ); 
   } 
 } 
-export default GenerateArticle;
+export default Attributes;
