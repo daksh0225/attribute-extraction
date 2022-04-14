@@ -8,6 +8,7 @@ class GenerateArticle extends React.Component {
   constructor(props) {
     super(props);
     this.addAttribute = this.addAttribute.bind(this);
+    this.removeSentence = this.removeSentence.bind(this);
   }
 
   state = {
@@ -25,6 +26,14 @@ class GenerateArticle extends React.Component {
     }), () => {
       console.log(this.state);
     })      
+  }
+  removeSentence(id) {
+    const updatedSentences = this.state.sentences.filter((sentence) => {
+      return sentence[1] != id;
+    })
+    this.setState({
+      sentences: updatedSentences,
+    })
   }
   render() {
     const attributeComponents = Object.keys(this.props.attributes).map(attributeName => 
@@ -45,6 +54,7 @@ class GenerateArticle extends React.Component {
           <div style = {{width: '70%'}}>
             <TextArea 
               sentences = {this.state.sentences}
+              removeSentence = {this.removeSentence}
             />
           </div>
           <div style = {{width: '30%', overflow: 'scroll', height: '500px'}}>

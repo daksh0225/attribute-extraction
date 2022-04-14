@@ -8,6 +8,8 @@ class Attributes extends React.Component {
     const sentenceComponents = this.props.sentences.map(sentence => 
       <SentenceChip 
         text = {sentence[0]}
+        id = {sentence[1]}
+        removeSentence = {this.props.removeSentence}
       />)
     return(
         <div style = {{height: '100%'}}>
