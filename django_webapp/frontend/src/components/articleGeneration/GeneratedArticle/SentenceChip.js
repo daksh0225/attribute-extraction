@@ -8,9 +8,12 @@ class SentenceChip extends React.Component {
   };
   render() {
         return (
-            <Stack direction="row" spacing={1}>
+            <Stack direction="row">
             <Chip label={this.props.text} onDelete={this.handleDelete} />
             </Stack>
+            // <div>
+            //     {this.props.text}
+            // </div>
         );
     }
 }

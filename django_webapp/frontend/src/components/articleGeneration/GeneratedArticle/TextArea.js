@@ -10,9 +10,11 @@ class Attributes extends React.Component {
         text = {sentence[0]}
       />)
     return(
-      <div style = {{border: '2px solid', margin: '1%', height: '100%', display: 'flex', flexWrap: 'wrap', gap: '1%', padding: '1%'}}>
-          {sentenceComponents}
-      </div>
+        <div style = {{height: '100%'}}>
+          <div style = {{height: '100%', border: '2px solid', margin: '1%', display: 'flex', padding: '1%', flexWrap: 'wrap', alignContent: 'flex-start', gap: '1%'}}>
+              {sentenceComponents}
+          </div>
+        </div>
       ); 
   } 
 } 
