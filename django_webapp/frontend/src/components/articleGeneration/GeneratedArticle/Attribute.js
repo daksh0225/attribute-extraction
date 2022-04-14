@@ -49,6 +49,7 @@ class Attribute extends React.Component {
     this.takeSentenceInput = this.takeSentenceInput.bind(this);
     this.handleClose = this.handleClose.bind(this);
     this.changeSentence = this.changeSentence.bind(this);
+    this.handleAdd = this.handleAdd.bind(this);
   }
   state = {
     expanded: false,
@@ -73,11 +74,30 @@ class Attribute extends React.Component {
     })
   }
   takeSentenceInput() {
+    if(this.state.formValue == 0) {
+      this.setState({
+        showModal: true,
+      })
+    } else {
+      // modify here to account for attribute value and article name.
+      this.setState((prevState) => ({
+        showModal: true,
+        sentence: this.props.collocs[prevState.formValue - 1][0].join(' '),
+      }))
+    }
+  }
+  handleClose() {
     this.setState({
-      showModal: true,
+      showModal: false,
     })
   }
   handleClose() {
+    this.setState({
+      showModal: false,
+    })
+  }
+  handleAdd() {
+    this.props.addAttribute(this.state.sentence);
     this.setState({
       showModal: false,
     })
@@ -163,7 +183,7 @@ class Attribute extends React.Component {
         </DialogContent>
         <DialogActions>
           <Button onClick={this.handleClose}>Cancel</Button>
-          <Button onClick={this.handleClose}>Subscribe</Button>
+          <Button onClick={this.handleAdd}>Add</Button>
         </DialogActions>
       </Dialog>
       </div>
