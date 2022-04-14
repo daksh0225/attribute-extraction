@@ -115,7 +115,7 @@ class Attribute extends React.Component {
       )
     })
     return(
-      <div>
+      <div style = {{display: 'flex', justifyContent: 'center'}}>
         <Card sx={{ maxWidth: 345 }}>
         <CardHeader
           title = {this.props.attributeName}

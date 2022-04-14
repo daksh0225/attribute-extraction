@@ -57,8 +57,8 @@ class GenerateArticle extends React.Component {
               removeSentence = {this.removeSentence}
             />
           </div>
-          <div style = {{width: '30%', overflow: 'scroll', height: '500px'}}>
-            {attributeComponents}
+          <div style = {{width: '30%', overflow: 'scroll', height: '500px', display: 'flex', flexDirection: 'column', gap: '2%'}}>
+              {attributeComponents}
           </div>
         </div>
         }
