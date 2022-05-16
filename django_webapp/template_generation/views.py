@@ -11,8 +11,13 @@ from rest_framework.views import APIView
 from . models import *
 from rest_framework.response import Response
 from . serializer import *
+import requests
+from tqdm import tqdm
+import wptools
+import wikipedia
 
 DATA_ROOT_PATH = "./template_generation/data/"
+TEMP_DATA_PATH = "./template_generation/temp"
 @csrf_exempt 
 def get_domain_names(request):
 
@@ -38,6 +43,57 @@ def setDomain(request):
 		obj = json.load(file)
 	return HttpResponse("domain changed to "+domain)
 
+@csrf_exempt 
+def add_domain(request, domain_name):
+	print('adding new domain')
+	petscan = requests.get('https://petscan.wmflabs.org/?max_sitelink_count=&categories=' + domain_name + '&depth=1&project=wikipedia&language=en&cb_labels_yes_l=1&edits%5Bflagged%5D=both&edits%5Bbots%5D=both&cb_labels_any_l=1&cb_labels_no_l=1&format=json&interface_language=en&edits%5Banons%5D=both&ns%5B0%5D=1&&doit=').json()
+	save_path = TEMP_DATA_PATH + domain_name + ".json"
+	store = []
+	total = 0
+	count = 0
+	missing_article_text = 0
+	missing_infobox_entries = 0
+	missing_wikidata_entries = 0
+	for page in tqdm(petscan['*'][0]['a']['*']):
+		infobox = ""
+		wikidata = ""
+		article = ""
+
+		title = page['title'].replace('_', ' ')
+		page = wptools.page(title)
+		fela = page.get_parse()
+
+		try:
+			page.get_wikidata()
+			wikidata = page.data['wikidata']
+		except:
+			missing_wikidata_entries += 1
+		
+		try:
+			infobox = fela.data['infobox']
+		except:
+			missing_infobox_entries += 1
+
+		try:
+			main_article = wikipedia.page(title)
+			article = main_article.content
+		except:
+			missing_article_text += 1
+
+		current_data = {
+			'title': title,
+			'infobox': infobox,
+			'wikidata': wikidata,
+			'article': article,
+		}
+		store.append(current_data)
+		total += 1
+		
+		if count % 100 == 0:
+			file = open(save_path, 'w')
+			file.write(json.dumps(store, indent=4))
+			file.close()
+	return HttpResponse("domain changed to "+domain_name)
 @csrf_exempt
 def get_collocs(request, domain_name):
 	file_path = DATA_ROOT_PATH + domain_name + ".json"
