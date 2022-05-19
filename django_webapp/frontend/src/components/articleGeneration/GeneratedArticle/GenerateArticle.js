@@ -15,6 +15,8 @@ class GenerateArticle extends React.Component {
     this.changeArticleName = this.changeArticleName.bind(this);
     this.generateArticle = this.generateArticle.bind(this);
     this.generateArticleText = this.generateArticleText.bind(this);
+    this.generateInfobox = this.generateInfobox.bind(this);
+    this.generateBody = this.generateBody.bind(this);
   }
 
   state = {
@@ -58,8 +60,25 @@ class GenerateArticle extends React.Component {
       sentences: updatedSentences,
     })
   }
+  generateInfobox() {
+    let infobox = "{{Infobox\n";
+    for(let i = 0; i < this.state.infobox.length; i++) {
+      infobox = infobox + "| " + this.state.infobox[i][0] + " = " + this.state.infobox[i][1] + "\n";
+    }
+    infobox = infobox + "}}";
+    return infobox;
+  }
+  generateBody() {
+    let body = "";
+    for(let i = 0; i < this.state.sentences.length; i++) {
+      body = body + this.state.sentences[i][0] + ". ";
+    }
+    return body;
+  }
   generateArticleText() {
-    return "This is the article text.";
+    const infobox = this.generateInfobox()
+    const body = this.generateBody();
+    return (infobox + "\n" + body);
   }
   generateArticle() {
     if(this.state.articleName === "") {

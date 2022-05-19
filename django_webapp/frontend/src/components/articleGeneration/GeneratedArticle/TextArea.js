@@ -13,8 +13,8 @@ class Attributes extends React.Component {
       />)
     return(
         <div style = {{height: '100%'}}>
-          <div style = {{height: '100%', border: '2px solid', margin: '1%', display: 'flex', padding: '1%', flexWrap: 'wrap', alignContent: 'flex-start', gap: '1%'}}>
-              {sentenceComponents}
+          <div style = {{height: '100%', border: '2px solid', margin: '1%', display: 'flex', padding: '1%', flexWrap: 'wrap', alignContent: 'flex-start', gap: '1%', backgroundColor: '#BEFCFF'}}>
+            {sentenceComponents}
           </div>
         </div>
       ); 

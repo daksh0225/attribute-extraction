@@ -127,13 +127,13 @@ class Attribute extends React.Component {
       )
     })
     return(
-      <div style = {{display: 'flex', justifyContent: 'center'}}>
+      <div style = {{display: 'flex', justifyContent: 'center', border: '2px'}}>
         <Card sx={{ maxWidth: 345 }}>
         <CardHeader
           title = {this.props.attributeName}
           style = {{backgroundColor: '#1976D2', color: 'white'}}
         />  
-        <div style = {{display: 'flex', flexDirection: 'column'}}>
+        <div style = {{display: 'flex', flexDirection: 'column', backgroundColor: '#BEFCFF '}}>
           <div>
             <CardContent>
               <Typography variant="body2" color="text.secondary">
@@ -150,35 +150,37 @@ class Attribute extends React.Component {
           </div>
           <div style = {{display: 'flex', justifyContent: 'center'}}>
             <div>
-            <FormControlLabel
-              label="Include in infobox"
-              control={
-                <Checkbox
-                  checked={this.state.include}
-                  label='Include in infobox'
-                  inputProps={{ 'aria-label': 'controlled' }}
-                  onChange={this.changeInclude}
-                />
-              }
-            />
+              <FormControlLabel
+                label="Include in infobox"
+                control={
+                  <Checkbox
+                    checked={this.state.include}
+                    label='Include in infobox'
+                    inputProps={{ 'aria-label': 'controlled' }}
+                    onChange={this.changeInclude}
+                  />
+                }
+              />
             </div>
           </div>
         </div>
-        <CardActions disableSpacing>
-          <Button
-            onClick = {this.takeSentenceInput}
-          >
-            ADD
-          </Button>
-          <ExpandMore
-            expand={this.state.expanded}
-            onClick={this.handleExpandClick}
-            aria-expanded={this.state.expanded}
-            aria-label="show more"
-          >
-            <ExpandMoreIcon />
-          </ExpandMore>
-        </CardActions>
+        <div>
+          <CardActions disableSpacing>
+            <Button
+              onClick = {this.takeSentenceInput}
+            >
+              ADD
+            </Button>
+            <ExpandMore
+              expand={this.state.expanded}
+              onClick={this.handleExpandClick}
+              aria-expanded={this.state.expanded}
+              aria-label="show more"
+            >
+              <ExpandMoreIcon />
+            </ExpandMore>
+          </CardActions>
+        </div>
         <Collapse in={this.state.expanded} timeout="auto" unmountOnExit>
           <CardContent>
             <Typography paragraph>
