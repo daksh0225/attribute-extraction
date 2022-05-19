@@ -43,21 +43,11 @@ class ArticleGeneration extends React.Component {
     }
 
     render() {
-    //     const allAttributes = Object.keys(this.state.attributes).map(attribute => 
-    //         <AttributeChip attributeName={attribute} attributeValue={this.state.attributes[attribute]} showCollocs={this.showCollocs}/>)
-        // const allCollocs = Object.keys(this.state.collocs).map(attribute =>
-        //     <CollocChip attributeName={attribute} attributeValue={this.state.collocs[attribute]} />)
         return(
             <div>
                 <SelectDomain 
                     setDomain = {this.setDomain}
                 />
-                {/* <div className="attribute-chips">
-                    {allAttributes}
-                </div>
-                <div className="collocs-chips">
-                    {allCollocs}
-                </div> */}
                 <GenerateArticle 
                     selectedDomain = {this.state.selectedDomain}
                     attributes = {this.state.attributes} 

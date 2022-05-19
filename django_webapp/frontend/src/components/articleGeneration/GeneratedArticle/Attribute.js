@@ -74,6 +74,10 @@ class Attribute extends React.Component {
     })
   }
   takeSentenceInput() {
+    if(this.state.attributeValue === "") {
+      alert("Atrribute value cannot be empty !")
+      return;
+    }
     if(this.state.formValue == 0) {
       this.setState({
         showModal: true,
@@ -97,7 +101,7 @@ class Attribute extends React.Component {
     })
   }
   handleAdd() {
-    this.props.addAttribute(this.state.sentence);
+    this.props.addAttribute(this.state.sentence, this.props.attributeName, this.state.attributeValue);
     this.setState({
       showModal: false,
     })
