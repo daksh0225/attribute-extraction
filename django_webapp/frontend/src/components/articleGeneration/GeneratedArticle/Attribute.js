@@ -22,6 +22,7 @@ import FormControl from '@mui/material/FormControl';
 import FormLabel from '@mui/material/FormLabel';
 import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
+import Checkbox from '@mui/material/Checkbox';
 
 import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
@@ -50,6 +51,7 @@ class Attribute extends React.Component {
     this.handleClose = this.handleClose.bind(this);
     this.changeSentence = this.changeSentence.bind(this);
     this.handleAdd = this.handleAdd.bind(this);
+    this.changeInclude = this.changeInclude.bind(this);
   }
   state = {
     expanded: false,
@@ -57,6 +59,7 @@ class Attribute extends React.Component {
     attributeValue: "",
     showModal: false,
     sentence: "",
+    include: false,
   }
   handleExpandClick = () => {
     this.setState((prev) => ({
@@ -101,7 +104,7 @@ class Attribute extends React.Component {
     })
   }
   handleAdd() {
-    this.props.addAttribute(this.state.sentence, this.props.attributeName, this.state.attributeValue);
+    this.props.addAttribute(this.state.sentence, this.props.attributeName, this.state.attributeValue, this.state.include);
     this.setState({
       showModal: false,
     })
@@ -109,6 +112,11 @@ class Attribute extends React.Component {
   changeSentence(event) {
     this.setState({
       sentence: event.target.value,
+    })
+  }
+  changeInclude(event) {
+    this.setState({
+      include: event.target.checked
     })
   }
   render() {
@@ -125,18 +133,37 @@ class Attribute extends React.Component {
           title = {this.props.attributeName}
           style = {{backgroundColor: '#1976D2', color: 'white'}}
         />  
-        <CardContent>
-          <Typography variant="body2" color="text.secondary">
-          <Button disabled>Value:</Button> 
-          <TextField
-            multiline
-            maxRows={1}
-            size="small"
-            value = {this.state.attributeValue}
-            onChange = {this.changeAttributeValue}
-          />
-          </Typography>
-        </CardContent>
+        <div style = {{display: 'flex', flexDirection: 'column'}}>
+          <div>
+            <CardContent>
+              <Typography variant="body2" color="text.secondary">
+              <Button disabled>Value:</Button> 
+              <TextField
+                multiline
+                maxRows={1}
+                size="small"
+                value = {this.state.attributeValue}
+                onChange = {this.changeAttributeValue}
+              />
+              </Typography>
+            </CardContent>
+          </div>
+          <div style = {{display: 'flex', justifyContent: 'center'}}>
+            <div>
+            <FormControlLabel
+              label="Include in infobox"
+              control={
+                <Checkbox
+                  checked={this.state.include}
+                  label='Include in infobox'
+                  inputProps={{ 'aria-label': 'controlled' }}
+                  onChange={this.changeInclude}
+                />
+              }
+            />
+            </div>
+          </div>
+        </div>
         <CardActions disableSpacing>
           <Button
             onClick = {this.takeSentenceInput}

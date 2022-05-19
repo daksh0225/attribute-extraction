@@ -14,14 +14,16 @@ class GenerateArticle extends React.Component {
     this.removeSentence = this.removeSentence.bind(this);
     this.changeArticleName = this.changeArticleName.bind(this);
     this.generateArticle = this.generateArticle.bind(this);
+    this.generateArticleText = this.generateArticleText.bind(this);
   }
 
   state = {
     sentences: [],
     meta: {},
     articleName: "",
+    infobox: [],
   }
-  addAttribute(sentence, attribute, value) {
+  addAttribute(sentence, attribute, value, include) {
     let maxi = 0;
     for(let i = 0; i < this.state.sentences.length; i++) {
       maxi = Math.max(maxi, this.state.sentences[i][1]);
@@ -30,9 +32,14 @@ class GenerateArticle extends React.Component {
     prevSentences.push([sentence, maxi + 1]);
     const meta = this.state.meta;
     meta[attribute] = value;
+    const prevInfobox = this.state.infobox;
+    if(include) {
+      prevInfobox.push([attribute, value])
+    }
     this.setState((prev) => ({
       sentences: prevSentences,
       meta: meta,
+      infobox: prevInfobox,
     }), () => {
       console.log(this.state);
     })      
@@ -51,8 +58,23 @@ class GenerateArticle extends React.Component {
       sentences: updatedSentences,
     })
   }
+  generateArticleText() {
+    return "This is the article text.";
+  }
   generateArticle() {
-    console.log('Generating Article')
+    if(this.state.articleName === "") {
+      alert("Article name is a required field.");
+      return;
+    }
+    const text = this.generateArticleText();
+    const element = document.createElement("a");
+    const file = new Blob([text], {
+      type: "text/plain"
+    });
+    element.href = URL.createObjectURL(file);
+    element.download = "wikiArticle.txt";
+    document.body.appendChild(element);
+    element.click();
   }
   render() {
     const attributeComponents = Object.keys(this.props.attributes).map(attributeName => 
