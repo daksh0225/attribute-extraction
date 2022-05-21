@@ -30,9 +30,9 @@ from nltk.collocations import *
 from nltk.util import ngrams
 from nltk.metrics.association import QuadgramAssocMeasures
 import collections
-# import nltk
+import nltk
 
-# nltk.download('punkt')
+nltk.download('punkt')
 
 DATA_ROOT_PATH = "./template_generation/data/"
 TEMP_DATA_PATH = "./template_generation/temp"
@@ -125,36 +125,43 @@ class TfIdfProcessor:
 		for item in self.data:
 			infobox = item['infobox']
 			wikidata = item['wikidata']
-	  
+			print(infobox)
+			# print(wikidata)
 		# processing the infobox keys. In the data passed, '_' is used as the 
 		# space character, so it is first replaced by space character. Then it is
 		# converted to lower case
-			try:
+			if infobox != None:
 				for key in infobox.keys():
-					key = key.replace('_', ' ')
-					cur_attribute = (key, key.lower().strip())
-					if key not in self.unique_attributes:
-						self.unique_attributes.add(key)
-						self.attributes.append(cur_attribute)
-			except:
-				pass
+					try:
+						key = key.replace('_', ' ')
+						cur_attribute = (key, key.lower().strip())
+						if key not in self.unique_attributes:
+							print('adding', key)
+							self.unique_attributes.add(key)
+							self.attributes.append(cur_attribute)
+					except:
+						pass
 		  # processing wikidata keys
-			try:
-				for key in wikidata.keys():
-					key_processed = preProcessWikidataText(key)
-					# key_processed = re.sub("\(.*?\)", "", key)
-					# key_processed = key_processed.strip().lower()
-					cur_attribute = (key, key_processed)
-					if key not in self.unique_attributes:
-						self.unique_attributes.add(key)
-						self.attributes.append(cur_attribute)
-			except:
-				pass
+			# for key in wikidata.keys():
+			# 	try:
+			# 		# key_processed = preProcessWikidataText(key)
+			# 		key_processed = key
+			# 		print('wikidata key', key)
+			# 		# key_processed = re.sub("\(.*?\)", "", key)
+			# 		# key_processed = key_processed.strip().lower()
+			# 		cur_attribute = (key, key_processed)
+			# 		if key not in self.unique_attributes:
+			# 			print('adding', key)
+			# 			self.unique_attributes.add(key)
+			# 			self.attributes.append(cur_attribute)
+			# 	except:
+			# 		pass
 
 
 	def findAttributeScores(self):
 		print('finding tf-idf scores of each attribute and caluculating section stats for each attribute...')
 		num_articles = len(self.text)
+		print(self.attributes)
 		for attribute in self.attributes:
 			tf = 0
 			df = 1
@@ -189,9 +196,9 @@ class TfIdfProcessor:
 				for sentenceInfo in self.section_stats_for_attributes[attributeName][sectionName]:
 					articleIndex = sentenceInfo[0]
 					sentence = sentenceInfo[3]
-					for wikidataKeys in data[articleIndex]['wikidata']:
+					for wikidataKeys in self.data[articleIndex]['wikidata']:
 						if self.preProcessWikidataText(wikidataKeys) == attributeName:
-							value = self.preProcessWikidataText(str(data[articleIndex]['wikidata'][wikidataKeys]))
+							value = self.preProcessWikidataText(str(self.data[articleIndex]['wikidata'][wikidataKeys]))
 							if sentence.find(value)!= -1:
 								newSentenceInfo = (*sentenceInfo, value)
 								section_score[sectionName].append(newSentenceInfo)
@@ -253,6 +260,7 @@ def create_collocations(data):
 	tfIdfProcessor.run()
 
 	attribute_collocs = dict()
+	print(tfIdfProcessor.section_stats_for_attributes)
 	for key in tfIdfProcessor.section_stats_for_attributes.keys():
 		print(key)
 		k = 5
@@ -261,9 +269,8 @@ def create_collocations(data):
 
 	attribute_collocs_dict = dict()
 
-	for item in attribute_collocs:
-		key = item['key']
-		collocs = item['collocs']
+	for key in attribute_collocs.keys():
+		collocs = attribute_collocs[key]
 		attribute_collocs_dict[key] = collocs
 
 	return attribute_collocs_dict
@@ -296,7 +303,7 @@ def setDomain(request):
 @csrf_exempt 
 def add_domain(request, domain_name):
 	print('adding new domain')
-	petscan = requests.get('https://petscan.wmflabs.org/?max_sitelink_count=&categories=' + domain_name + '&depth=0&project=wikipedia&language=en&cb_labels_yes_l=1&edits%5Bflagged%5D=both&edits%5Bbots%5D=both&cb_labels_any_l=1&cb_labels_no_l=1&format=json&interface_language=en&edits%5Banons%5D=both&ns%5B0%5D=1&&doit=').json()
+	petscan = requests.get('https://petscan.wmflabs.org/?max_sitelink_count=&categories=' + domain_name + '&depth=1&project=wikipedia&language=en&cb_labels_yes_l=1&edits%5Bflagged%5D=both&edits%5Bbots%5D=both&cb_labels_any_l=1&cb_labels_no_l=1&format=json&interface_language=en&edits%5Banons%5D=both&ns%5B0%5D=1&&doit=').json()
 	save_path = TEMP_DATA_PATH + domain_name + ".json"
 	store = []
 	total = 0
@@ -339,6 +346,9 @@ def add_domain(request, domain_name):
 		}
 		store.append(current_data)
 		total += 1
+
+		if total == 2:
+			break
 	
 	with open(DATA_ROOT_PATH+domain_name+'.json', 'w+') as file:
 		json.dump(store, file, indent=4)
@@ -349,7 +359,7 @@ def add_domain(request, domain_name):
 		store[i]["coref_resolved_unprocessed"] = doc._.coref_resolved
 
 	attribute_collocs = create_collocations(store)
-	with open('./'+domain_name+'_attribute_collocs.json', 'w+') as file:
+	with open(DATA_ROOT_PATH+domain_name+'.json', 'w+') as file:
 		json.dump(attribute_collocs, file, indent=4)
 
 		# if count % 100 == 0:
